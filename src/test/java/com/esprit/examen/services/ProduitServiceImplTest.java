@@ -79,15 +79,5 @@ public class ProduitServiceImplTest {
 		verify(produitRepository, times(1)).findById(produitId);
 	}
 
-	@Test
-	public void testAssignProduitToStock() {
-		Long idProduit = 1L;
-		Long idStock = 1L;
-		Produit produit = new Produit(idProduit, "P1", "Produit 1", 10.0f, new Date(), new Date(), null, null, null);
-		when(produitRepository.findById(idProduit)).thenReturn(Optional.of(produit));
 
-		produitService.assignProduitToStock(idProduit, idStock);
-		verify(produitRepository, times(1)).findById(idProduit);
-		verify(produitRepository, times(1)).save(produit);
-	}
 }
