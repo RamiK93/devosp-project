@@ -1,4 +1,4 @@
-/*package com.esprit.examen.services;
+package com.esprit.examen.services;
 
 import static org.junit.Assert.*;
 
@@ -6,16 +6,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.math.BigDecimal;
+import java.util.Set;
 
+
+import com.esprit.examen.entities.DetailFacture;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.esprit.examen.entities.CategorieClient;
-import com.esprit.examen.entities.Client;
-import com.esprit.examen.entities.Profession;
+import com.esprit.examen.entities.CategorieFournisseur;
+import com.esprit.examen.entities.Fournisseur;
+import com.esprit.examen.entities.Facture;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,36 +29,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientServiceImplTest {
 	@Autowired
-	IClientService clientService;
+	IFactureService iFactureService;
 
 	
 	@Test
-	public void testAddClient() throws ParseException {
+	public void testAddFacture() throws ParseException {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateNaissance = dateFormat.parse("30/09/2000");
-		Client c = new Client("Salhi", "Ahmed", dateNaissance, "ahmed.salhi@esprit.tn", "pwd", Profession.Cadre,
-				CategorieClient.Ordinaire);
-		Client client = clientService.addClient(c);
-		System.out.print("client "+client);
-		assertNotNull(client.getIdClient());
-		assertNotNull(client.getCategorieClient());
-		assertTrue(client.getNom().length() > 0);
-		clientService.deleteClient(client.getIdClient());
+		Date dateCreation = dateFormat.parse("30/09/2000");
+		Date dateModif = dateFormat.parse("30/10/2000");
+		Facture f = new Facture(1234567890L,100.0f, 500.0f, dateCreation, dateModif, false, null, null, null);
+		Facture facture = iFactureService.addFacture(f);
+		System.out.print("facture "+facture);
+		assertNotNull(facture.getIdFacture());
+		assertNotNull(facture.getMontantFacture());
+		assertNotNull(facture.getMontantRemise());
+		assertNotNull(facture.getDateCreationFacture());
+		assertNotNull(facture.getDateDerniereModificationFacture());
+		assertNotNull(facture.getArchivee());
 
 	}
 	@Test
-	public void testDeleteClient() throws ParseException {
+	public void testDeleteFacture() throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateNaissance = dateFormat.parse("30/09/2000");
-		Client c = new Client("Salhi", "Ahmed", dateNaissance, "ahmed.salhi@esprit.tn", "pwd", Profession.Cadre,
-				CategorieClient.Ordinaire);
-		Client client = clientService.addClient(c);
-		clientService.deleteClient(client.getIdClient());
-		assertNull(clientService.retrieveClient(client.getIdClient()));
+		Date dateCreation = dateFormat.parse("30/09/2000");
+		Date dateModif = dateFormat.parse("30/10/2000");
+		Facture f = new Facture(1234567890L,100.0f, 500.0f, dateCreation, dateModif, false, null, null, null);
+		Facture facture = iFactureService.addFacture(f);
+		iFactureService.cancelFacture(facture.getIdFacture());
+		System.out.println(facture.getArchivee());
 	}
 
-	@Test
+	/*@Test
 	public void testRetrieveAllClients() throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date dateNaissance = dateFormat.parse("30/09/2000");
@@ -79,7 +85,6 @@ public class ClientServiceImplTest {
 			log.info(" client : " + client.getNom()+ " né le "+client.getDateNaissance());
 
 		}
-	}
+	}*/
 
 }
-*/
