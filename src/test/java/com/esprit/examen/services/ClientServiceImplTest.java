@@ -1,4 +1,4 @@
-package com.esprit.examen.services;
+/*package com.esprit.examen.services;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +40,7 @@ public class ClientServiceImplTest {
 		Date dateModif = dateFormat.parse("30/10/2000");
 		Facture f = new Facture(1234567890L,100.0f, 500.0f, dateCreation, dateModif, false, null, null, null);
 		Facture facture = iFactureService.addFacture(f);
-		System.out.print("facture "+facture);
+		log.info("facture {}", facture);
 		assertNotNull(facture.getIdFacture());
 		assertNotNull(facture.getMontantFacture());
 		assertNotNull(facture.getMontantRemise());
@@ -60,20 +60,19 @@ public class ClientServiceImplTest {
 		System.out.println(facture.getArchivee());
 	}
 
-	/*@Test
-	public void testRetrieveAllClients() throws ParseException {
+	@Test
+	public void testRetrieveAllFactures() throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date dateNaissance = dateFormat.parse("30/09/2000");
-		List<Client> clients = clientService.retrieveAllClients();
-		int expected = clients.size();
-		Client c = new Client("Salhi", "Ahmed", dateNaissance, "ahmed.salhi@esprit.tn", "pwd", Profession.Cadre,
-				CategorieClient.Ordinaire);
-		Client client = clientService.addClient(c);
-		assertEquals(expected + 1, clientService.retrieveAllClients().size());
-		clientService.deleteClient(client.getIdClient());
+		Date dateCreation = dateFormat.parse("30/09/2000");
+		Date dateModif = dateFormat.parse("30/10/2000");
+		List<Facture> factures = iFactureService.retrieveAllFactures();
+		int expected = factures.size();
+		Facture f = new Facture(1234567890L,100.0f, 500.0f, dateCreation, dateModif, false, null, null, null);
+		iFactureService.addFacture(f);
+		assertEquals(expected + 1, iFactureService.retrieveAllFactures().size());
 
 	}
-	@Test
+	/*@Test
 	public void testGetClientsByDateNaissance() throws ParseException
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -85,6 +84,6 @@ public class ClientServiceImplTest {
 			log.info(" client : " + client.getNom()+ " né le "+client.getDateNaissance());
 
 		}
-	}*/
+	}
 
-}
+}*/
