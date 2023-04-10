@@ -1,9 +1,11 @@
-FROM openjdk:11 AS builder
-RUN apt-get update -y && apt-get install maven -y
+# Stage 1: Build with Maven
+FROM maven:3.8.3-jdk-11 AS builder
+WORKDIR /app
 COPY . .
 RUN mvn clean package -Dmaven.test.skip=true
 
-FROM openjdk:11
-COPY --from=builder /target/tpAchatProject-1.0.jar /app/tpAchatProject-1.0.jar
+# Stage 2: Run the app with JRE
+FROM openjdk:11-jre-slim
+COPY --from=builder /app/target/tpAchatProject-1.0.jar /app/tpAchatProject-1.0.jar
 WORKDIR /app
 CMD ["java", "-jar", "tpAchatProject-1.0.jar"]
