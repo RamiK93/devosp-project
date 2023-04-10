@@ -1,37 +1,73 @@
+
 services:
-  sonarqube:
-    image: sonarqube:8.9.7-community
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-      - ./sonar.properties:/opt/sonarqube/conf/sonar.properties
-      - ./plugins:/opt/sonarqube/extensions/plugins
-    environment:
-      SONARQUBE_WEB_JVMARGS: "-Dsonar.prometheus.export.enabled=true"
-    depends_on:
-      - mysql
+  #sonartype nexus3
   nexus:
     image: sonatype/nexus3
+    container_name: nexus3
+    restart: always
     ports:
-      - "8081:8081"
+      - ${NEXUS_PORT}:8081
     volumes:
-      - nexus_data:/nexus-data
-  mysql:
-    image: mysql
-    container_name: mysql
+      - nexus-data:/nexus-data
+    networks:
+      - cicd
+  #Jenkins container
+  jenkins:
+    build:
+      context: .
+      dockerfile: ./jenkins/Dockerfile
+      args:
+        - MAVEN_V=${MAVEN_VERSION}
+        - JENKINS_USER=${JENKINS_USER}
+        - JENKINS_PASS=${JENKINS_PASS}
+        - DOCKER_USER=${DOCKER_USER}
+        - DOCKER_PASS=${DOCKER_PASS}
+        - JENKINS_PORT=${JENKINS_PORT}
+    container_name: jenkins
     ports:
-      - "3306:3306"
+      - ${JENKINS_PORT}:8080
+      - 50000:50000
+    privileged: true
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+  #sonarqube container
+  sonarqube:
+    depends_on:
+      - db
+    image: sonarqube:8.9.7-community
+    container_name: sonarqube
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    ports:
+      - ${SONAR_PORT}:9000
     environment:
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_USER: root
-      MYSQL_DATABASE: mysql
+      - USER_LOGIN=${SONAR_USER_LOGIN}
+      - USER_NAME=${SONAR_USER_NAME}
+      - USER_PASSWORD=${SONAR_USER_PASSWORD}
+
+    #Mysql db setup
+  db:
+    image: mysql:5.7.32
+    container_name: mysqldb
+    restart: always
+    ports:
+      - '${MYSQL_PORT}:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_INIT_DATABASE} #Initial database
 
 volumes:
+  nexus-data:
+  mysql-data:
+  jenkins_data:
+  sonarqube_conf:
   sonarqube_data:
   sonarqube_extensions:
-  sonarqube_logs:
-  nexus_data:
+  sonarqube_bundled-plugins:
