@@ -98,6 +98,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+				</configuration>
 			</plugin>
 			<!-- JaCoCo code coverage plugin -->
 		</plugins>
