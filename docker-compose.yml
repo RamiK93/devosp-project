@@ -1,0 +1,24 @@
+version: '2'
+services:
+  mysqldb:
+    container_name: devops-mysqldb
+    image: mysql:8
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=achatdb
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
+
+  devops-backend:
+    image: haifajouini/devops-project:6e966c0
+    container_name: devops
+    restart: on-failure
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/achatdb
+    ports:
+      - 8089:8089
+    depends_on:
+      - mysqldb
