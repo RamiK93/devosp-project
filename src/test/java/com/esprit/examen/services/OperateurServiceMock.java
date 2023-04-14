@@ -60,10 +60,10 @@ public class OperateurServiceMock {
     @Test
     public void createOperateurTest() {
         Operateur operateur = new Operateur(3L,"Hamza", "Rahali","Hamza123",null);
-        operateur2.setIdOperateur(2L);
-        operateurService.addOperateur(operateur2);
-        verify(operateurRepository, times(1)).save(operateur2);
-        System.out.println(operateur2);
+        operateur.setIdOperateur(2L);
+        operateurService.addOperateur(operateur);
+        verify(operateurRepository, times(1)).save(operateur);
+        System.out.println(operateur);
         System.out.println(" Create is working correctly...!!");
     }
 
