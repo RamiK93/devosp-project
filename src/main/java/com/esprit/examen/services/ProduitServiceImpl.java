@@ -2,6 +2,7 @@ package com.esprit.examen.services;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ public class ProduitServiceImpl implements IProduitService {
 
 	@Override
 	public List<Produit> retrieveAllProduits() {
-		List<Produit> produits = (List<Produit>) produitRepository.findAll();
+		List<Produit> produits = produitRepository.findAll();
 		for (Produit produit : produits) {
-			log.info(" Produit : " + produit);
+			log.info("Produit : " + produit);
 		}
 		return produits;
 	}
@@ -60,11 +61,12 @@ public class ProduitServiceImpl implements IProduitService {
 
 	@Override
 	public void assignProduitToStock(Long idProduit, Long idStock) {
-		Produit produit = produitRepository.findById(idProduit).orElse(null);
-		Stock stock = stockRepository.findById(idStock).orElse(null);
+		Produit produit = produitRepository.findById(idProduit)
+				.orElseThrow(() -> new EntityNotFoundException("Produit not found"));
+		Stock stock = stockRepository.findById(idStock)
+				.orElseThrow(() -> new EntityNotFoundException("Stock not found"));
 		produit.setStock(stock);
 		produitRepository.save(produit);
-
 	}
 
 

@@ -3,6 +3,7 @@ package com.esprit.examen.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,12 +77,12 @@ public class FournisseurServiceImpl implements IFournisseurService {
 
 	@Override
 	public void assignSecteurActiviteToFournisseur(Long idSecteurActivite, Long idFournisseur) {
-		Fournisseur fournisseur = fournisseurRepository.findById(idFournisseur).orElse(null);
-		SecteurActivite secteurActivite = secteurActiviteRepository.findById(idSecteurActivite).orElse(null);
-        fournisseur.getSecteurActivites().add(secteurActivite);
-        fournisseurRepository.save(fournisseur);
-		
-		
+		Fournisseur fournisseur = fournisseurRepository.findById(idFournisseur)
+				.orElseThrow(() -> new EntityNotFoundException("Fournisseur not found"));
+		SecteurActivite secteurActivite = secteurActiviteRepository.findById(idSecteurActivite)
+				.orElseThrow(() -> new EntityNotFoundException("SecteurActivite not found"));
+		fournisseur.getSecteurActivites().add(secteurActivite);
+		fournisseurRepository.save(fournisseur);
 	}
 
 	

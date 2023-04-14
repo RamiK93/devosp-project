@@ -30,15 +30,14 @@ public class OperateurServiceImpl implements IOperateurService {
 	}
 
 	@Override
-	public Operateur updateOperateur(Operateur o) {
-		operateurRepository.save(o);
-		return o;
+	public Operateur updateOperateur(Operateur opBody) {
+		operateurRepository.save(opBody);
+		return opBody;
 	}
 
 	@Override
 	public Operateur retrieveOperateur(Long id) {
-		Operateur operateur = operateurRepository.findById(id).orElse(null);
-		return operateur;
+		return operateurRepository.findById(id).orElse(null);
 	}
 
 }
