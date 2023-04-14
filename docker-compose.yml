@@ -13,7 +13,7 @@ services:
       - /home/mysql/data:/var/lib/mysql
 
   devops-backend:
-    image: haifajouini/devops-project:6e966c0
+    image: haifajouini/devops-project:7b2f2af
     container_name: devops
     restart: on-failure
     environment:
