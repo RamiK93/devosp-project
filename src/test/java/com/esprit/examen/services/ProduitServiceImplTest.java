@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 import com.esprit.examen.entities.Produit;
 import com.esprit.examen.repositories.ProduitRepository;
 
-public class ProduitServiceImplTest {
+class ProduitServiceImplTest {
 
 	@Mock
 	private ProduitRepository produitRepository;
@@ -30,7 +30,7 @@ public class ProduitServiceImplTest {
 	}
 
 	@Test
-	public void testRetrieveAllProduits() {
+	void testRetrieveAllProduits() {
 		List<Produit> produits = new ArrayList<>();
 		produits.add(new Produit(1L, "P1", "Produit 1", 10.0f, new Date(), new Date(), null, null, null));
 		produits.add(new Produit(2L, "P2", "Produit 2", 20.0f, new Date(), new Date(), null, null, null));
@@ -42,7 +42,7 @@ public class ProduitServiceImplTest {
 	}
 
 	@Test
-	public void testAddProduit() {
+	void testAddProduit() {
 		Produit produit = new Produit(1L, "P1", "Produit 1", 10.0f, new Date(), new Date(), null, null, null);
 		when(produitRepository.save(produit)).thenReturn(produit);
 
@@ -52,14 +52,14 @@ public class ProduitServiceImplTest {
 	}
 
 	@Test
-	public void testDeleteProduit() {
+	void testDeleteProduit() {
 		Long produitId = 1L;
 		produitService.deleteProduit(produitId);
 		verify(produitRepository, times(1)).deleteById(produitId);
 	}
 
 	@Test
-	public void testUpdateProduit() {
+	void testUpdateProduit() {
 		Produit produit = new Produit(1L, "P1", "Produit 1", 10.0f, new Date(), new Date(), null, null, null);
 		when(produitRepository.save(produit)).thenReturn(produit);
 
@@ -69,7 +69,7 @@ public class ProduitServiceImplTest {
 	}
 
 	@Test
-	public void testRetrieveProduit() {
+	void testRetrieveProduit() {
 		Long produitId = 1L;
 		Produit produit = new Produit(produitId, "P1", "Produit 1", 10.0f, new Date(), new Date(), null, null, null);
 		when(produitRepository.findById(produitId)).thenReturn(Optional.of(produit));

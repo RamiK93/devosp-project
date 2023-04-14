@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class FactureServiceImpTest {
+class FactureServiceImpTest {
     @Autowired
     IFactureService iFactureService;
 

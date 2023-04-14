@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class OperateurServiceMock {
+class OperateurServiceMock {
 
     @Mock
     FactureRepository factureRepository;
@@ -43,7 +43,7 @@ public class OperateurServiceMock {
     OperateurServiceImpl operateurService;
 
     @Test
-    public void testRetrieveOperateur() {
+    void testRetrieveOperateur() {
 
         Operateur operateur = new Operateur(1L,"Hamza", "Rahali","Hamza123",null);
         operateur.setIdOperateur(1L);
@@ -58,7 +58,7 @@ public class OperateurServiceMock {
 
 
     @Test
-    public void createOperateurTest() {
+     void createOperateurTest() {
         Operateur operateur = new Operateur(3L,"Hamza", "Rahali","Hamza123",null);
         operateur.setIdOperateur(2L);
         operateurService.addOperateur(operateur);
@@ -69,7 +69,7 @@ public class OperateurServiceMock {
 
 
     @Test
-    public void getAllOperateurTest() {
+     void getAllOperateurTest() {
         List<Operateur> operateurlist = new ArrayList<Operateur>() {
             {
                 add(new Operateur(3L, "azizo", "douraydos","pass123", null));
