@@ -1,73 +1,24 @@
-
+version: '2'
 services:
-  #sonartype nexus3
-  nexus:
-    image: sonatype/nexus3
-    container_name: nexus3
-    restart: always
+  mysqldb:
+    container_name: devops-mysqldb
+    image: mysql:8
+    restart: unless-stopped
     ports:
-      - ${NEXUS_PORT}:8081
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=achatdb
     volumes:
-      - nexus-data:/nexus-data
-    networks:
-      - cicd
-  #Jenkins container
-  jenkins:
-    build:
-      context: .
-      dockerfile: ./jenkins/Dockerfile
-      args:
-        - MAVEN_V=${MAVEN_VERSION}
-        - JENKINS_USER=${JENKINS_USER}
-        - JENKINS_PASS=${JENKINS_PASS}
-        - DOCKER_USER=${DOCKER_USER}
-        - DOCKER_PASS=${DOCKER_PASS}
-        - JENKINS_PORT=${JENKINS_PORT}
-    container_name: jenkins
+      - /home/mysql/data:/var/lib/mysql
+
+  devops-backend:
+    image: waelkefi/devops:7b2f2af
+    container_name: devops
+    restart: on-failure
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/achatdb
     ports:
-      - ${JENKINS_PORT}:8080
-      - 50000:50000
-    privileged: true
-    volumes:
-      - jenkins_data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-  #sonarqube container
-  sonarqube:
+      - 8089:8089
     depends_on:
-      - db
-    image: sonarqube:8.9.7-community
-    container_name: sonarqube
-    volumes:
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    ports:
-      - ${SONAR_PORT}:9000
-    environment:
-      - USER_LOGIN=${SONAR_USER_LOGIN}
-      - USER_NAME=${SONAR_USER_NAME}
-      - USER_PASSWORD=${SONAR_USER_PASSWORD}
-
-    #Mysql db setup
-  db:
-    image: mysql:5.7.32
-    container_name: mysqldb
-    restart: always
-    ports:
-      - '${MYSQL_PORT}:3306'
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_INIT_DATABASE} #Initial database
-
-volumes:
-  nexus-data:
-  mysql-data:
-  jenkins_data:
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_bundled-plugins:
+      - mysqldb
