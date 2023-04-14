@@ -21,7 +21,7 @@ public class StockServiceImpl implements IStockService {
 	public List<Stock> retrieveAllStocks() {
 		// récuperer la date à l'instant t1
 		log.info("In method retrieveAllStocks");
-		List<Stock> stocks =  stockRepository.findAll();
+		List<Stock> stocks = (List<Stock>) stockRepository.findAll();
 		for (Stock stock : stocks) {
 			log.info(" Stock : " + stock);
 		}
@@ -69,24 +69,16 @@ public class StockServiceImpl implements IStockService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		Date now = new Date();
 		String msgDate = sdf.format(now);
-		StringBuilder builder = new StringBuilder();
-		StringBuilder newLine = new StringBuilder();
-		newLine.append(System.getProperty("line.separator"));
-		List<Stock> stocksEnRouge =  stockRepository.retrieveStatusStock();
+		String finalMessage = "";
+		String newLine = System.getProperty("line.separator");
+		List<Stock> stocksEnRouge = (List<Stock>) stockRepository.retrieveStatusStock();
 		for (int i = 0; i < stocksEnRouge.size(); i++) {
-			builder.insert(0, newLine);
-			builder.insert(1, builder);
-			builder.insert(2,msgDate );
-			builder.insert(3,newLine );
-			builder.insert(4,"le stock" );
-			builder.insert(5,stocksEnRouge.get(i).getLibelleStock() );
-			builder.insert(6,"a une quantite" );
-			builder.insert(7,stocksEnRouge.get(i).getQte() );
-			builder.insert(8,"inférieur à la quantité minimale a ne pas dépasser de" );
-			builder.insert(9,stocksEnRouge.get(i).getQteMin() );
-			builder.insert(10,newLine );
+			finalMessage = newLine + finalMessage + msgDate + newLine + ": le stock "
+					+ stocksEnRouge.get(i).getLibelleStock() + " a une quantité de " + stocksEnRouge.get(i).getQte()
+					+ " inférieur à la quantité minimale a ne pas dépasser de " + stocksEnRouge.get(i).getQteMin()
+					+ newLine;
+
 		}
-		String finalMessage = builder.toString();
 		log.info(finalMessage);
 		return finalMessage;
 	}
