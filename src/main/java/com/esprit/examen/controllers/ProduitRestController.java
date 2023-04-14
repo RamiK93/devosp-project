@@ -33,7 +33,6 @@ public class ProduitRestController {
 	}
 
 	/* Ajouter en produit tout en lui affectant la catégorie produit et le stock associés */
-
 	@PostMapping("/add-produit")
 	@ResponseBody
 	public Produit addProduit(@RequestBody Produit p) {

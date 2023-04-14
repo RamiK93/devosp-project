@@ -61,12 +61,6 @@ public class StockRestController {
 	 * au stock La fct schédulé doit obligatoirement etre sans paramètres et
 	 * sans retour (void)
 	 */
-	// http://localhost:8089/SpringMVC/stock/retrieveStatusStock
-	// @Scheduled(fixedRate = 60000)
-	// @Scheduled(fixedDelay = 60000)
-	//@Scheduled(cron = "*/60 * * * * *")
-	//@GetMapping("/retrieveStatusStock")
-//	@ResponseBody
 
 
 }

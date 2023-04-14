@@ -32,9 +32,9 @@ public class CategorieProduitServiceImpl implements ICategorieProduitService {
 	}
 
 	@Override
-	public CategorieProduit updateCategorieProduit(CategorieProduit cpBody) {
-		categorieProduitRepository.save(cpBody);
-		return cpBody;
+	public CategorieProduit updateCategorieProduit(CategorieProduit cpu) {
+		categorieProduitRepository.save(cpu);
+		return cpu;
 	}
 
 	@Override
