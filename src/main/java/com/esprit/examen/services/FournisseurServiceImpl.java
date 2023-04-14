@@ -10,6 +10,9 @@ import com.esprit.examen.repositories.FournisseurRepository;
 import com.esprit.examen.repositories.ProduitRepository;
 import com.esprit.examen.repositories.SecteurActiviteRepository;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Date;
+import java.util.List;
+import javax.transaction.Transactional;
 
 @Service
 @Slf4j
@@ -26,7 +29,7 @@ public class FournisseurServiceImpl implements IFournisseurService {
 
 	@Override
 	public List<Fournisseur> retrieveAllFournisseurs() {
-		List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+		List<Fournisseur> fournisseurs = (List<Fournisseur>) fournisseurRepository.findAll();
 		for (Fournisseur fournisseur : fournisseurs) {
 			log.info(" fournisseur : " + fournisseur);
 		}
