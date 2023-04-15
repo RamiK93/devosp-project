@@ -21,7 +21,7 @@ import lombok.Setter;
 public class CategorieProduit implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
