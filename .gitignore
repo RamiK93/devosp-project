@@ -12,6 +12,7 @@ target/
 .sts4-cache
 .idea
 *.iws
+
 *.iml
 *.ipr
 /nbproject/private/
